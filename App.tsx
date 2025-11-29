@@ -6,7 +6,8 @@ import DomainModal from './components/DomainModal';
 import ImportModal from './components/ImportModal';
 import ConfirmModal from './components/ConfirmModal';
 import { updateAllDomains } from './services/whoisService';
-import { Plus, Search, LayoutGrid, BarChart2, CheckCircle, Clock, RefreshCw, Github, ArrowUp } from 'lucide-react';
+import { Plus, Search, LayoutGrid, BarChart2, CheckCircle, Clock, RefreshCw, Github, ArrowUp, ChevronDown } from 'lucide-react';
+import { open } from '@tauri-apps/plugin-shell';
 
 const App: React.FC = () => {
   const [domains, setDomains] = useState<Domain[]>([]);
@@ -194,18 +195,21 @@ const App: React.FC = () => {
                 className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <select
-              aria-label="Filter by status"
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value as DomainStatus | 'ALL')}
-              className="px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="ALL">所有状态</option>
-              <option value={DomainStatus.OWNED}>已拥有</option>
-              <option value={DomainStatus.BACKORDER}>抢注中</option>
-              <option value={DomainStatus.WATCHLIST}>关注列表</option>
-              <option value={DomainStatus.EXPIRED}>已过期</option>
-            </select>
+            <div className="relative">
+              <select
+                aria-label="Filter by status"
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value as DomainStatus | 'ALL')}
+                className="appearance-none pl-3 pr-8 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="ALL">所有状态</option>
+                <option value={DomainStatus.OWNED}>已拥有</option>
+                <option value={DomainStatus.BACKORDER}>抢注中</option>
+                <option value={DomainStatus.WATCHLIST}>关注列表</option>
+                <option value={DomainStatus.EXPIRED}>已过期</option>
+              </select>
+              <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            </div>
           </div>
           
           <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -295,10 +299,8 @@ const App: React.FC = () => {
             </button>
 
             {/* GitHub Button */}
-            <a
-              href="https://github.com/trustdev-org/Domain-Master"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => open('https://github.com/trustdev-org/Domain-Master')}
               className={`absolute inset-0 p-3 bg-gray-900 text-white rounded-full shadow-lg hover:bg-gray-700 transition-all duration-500 transform flex items-center justify-center ${
                 showScrollTop 
                   ? 'opacity-0 -translate-y-4 -rotate-90 scale-75 pointer-events-none' 
@@ -308,7 +310,7 @@ const App: React.FC = () => {
               title="View on GitHub"
             >
               <Github className="w-6 h-6" />
-            </a>
+            </button>
           </div>
         </div>
       </div>

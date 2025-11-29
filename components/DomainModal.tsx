@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Domain, DomainStatus } from '../types';
-import { X, Calendar, AlertCircle, Save, FileText } from 'lucide-react';
+import { X, Calendar, AlertCircle, Save, FileText, ChevronDown } from 'lucide-react';
 
 interface DomainModalProps {
   domain: Domain;
@@ -107,17 +107,20 @@ const DomainModal: React.FC<DomainModalProps> = ({ domain, isOpen, onClose, onUp
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-bold text-gray-900 mb-1">所有权状态</label>
-                  <select
-                    aria-label="Ownership Status"
-                    value={formData.status}
-                    onChange={(e) => handleChange('status', e.target.value)}
-                    className="w-full rounded-lg border-gray-300 border p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
-                  >
-                    <option value={DomainStatus.OWNED}>✅ 已拥有</option>
-                    <option value={DomainStatus.BACKORDER}>⚡ 抢注中</option>
-                    <option value={DomainStatus.WATCHLIST}>👀 关注列表</option>
-                    <option value={DomainStatus.EXPIRED}>❌ 已过期</option>
-                  </select>
+                  <div className="relative">
+                    <select
+                      aria-label="Ownership Status"
+                      value={formData.status}
+                      onChange={(e) => handleChange('status', e.target.value)}
+                      className="appearance-none w-full rounded-lg border-gray-300 border p-2.5 pr-8 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
+                    >
+                      <option value={DomainStatus.OWNED}>✅ 已拥有</option>
+                      <option value={DomainStatus.BACKORDER}>⚡ 抢注中</option>
+                      <option value={DomainStatus.WATCHLIST}>👀 关注列表</option>
+                      <option value={DomainStatus.EXPIRED}>❌ 已过期</option>
+                    </select>
+                    <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                  </div>
                 </div>
                 <div>
                    <label className="block text-sm font-bold text-gray-900 mb-1">注册商</label>
