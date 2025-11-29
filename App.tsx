@@ -6,13 +6,14 @@ import DomainModal from './components/DomainModal';
 import ImportModal from './components/ImportModal';
 import ConfirmModal from './components/ConfirmModal';
 import { updateAllDomains } from './services/whoisService';
-import { Plus, Search, LayoutGrid, BarChart2, CheckCircle, Clock, RefreshCw } from 'lucide-react';
+import { Plus, Search, LayoutGrid, BarChart2, CheckCircle, Clock, RefreshCw, Github, ArrowUp } from 'lucide-react';
 
 const App: React.FC = () => {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<DomainStatus | 'ALL'>('ALL');
+  const [showScrollTop, setShowScrollTop] = useState(false);
   
   const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
   const [initialTab, setInitialTab] = useState<'details' | 'formatted_whois' | 'raw_whois' | undefined>(undefined);
@@ -35,6 +36,19 @@ const App: React.FC = () => {
       saveDomains(domains);
     }
   }, [domains, isLoaded]);
+
+  // Handle scroll for back to top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 200);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleImport = (newDomains: Domain[]) => {
     // Filter duplicates by name
@@ -253,6 +267,50 @@ const App: React.FC = () => {
           onConfirm={executeDelete}
           onCancel={() => setDeleteId(null)}
         />
+
+        {/* Footer */}
+        <footer className="mt-12 pb-8 text-center space-y-2">
+          <p className="text-gray-400 text-sm">
+            &copy; {new Date().getFullYear()} Trustdev.org. All rights reserved.
+          </p>
+          <p className="text-gray-400 text-sm">
+            Open Source Project released under MIT License
+          </p>
+        </footer>
+
+        {/* Floating Action Buttons */}
+        <div className="fixed bottom-8 right-8 z-40">
+          <div className="relative w-12 h-12">
+            {/* Back to Top Button */}
+            <button
+              onClick={scrollToTop}
+              className={`absolute inset-0 p-3 bg-white text-gray-600 rounded-full shadow-lg border border-gray-100 hover:bg-gray-50 hover:text-blue-600 transition-all duration-500 transform ${
+                showScrollTop 
+                  ? 'opacity-100 translate-y-0 rotate-0 scale-100' 
+                  : 'opacity-0 translate-y-4 rotate-90 scale-75 pointer-events-none'
+              }`}
+              aria-label="Back to top"
+            >
+              <ArrowUp className="w-6 h-6" />
+            </button>
+
+            {/* GitHub Button */}
+            <a
+              href="https://github.com/trustdev-org/Domain-Master"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`absolute inset-0 p-3 bg-gray-900 text-white rounded-full shadow-lg hover:bg-gray-700 transition-all duration-500 transform flex items-center justify-center ${
+                showScrollTop 
+                  ? 'opacity-0 -translate-y-4 -rotate-90 scale-75 pointer-events-none' 
+                  : 'opacity-100 translate-y-0 rotate-0 scale-100'
+              }`}
+              aria-label="View on GitHub"
+              title="View on GitHub"
+            >
+              <Github className="w-6 h-6" />
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

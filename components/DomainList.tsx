@@ -186,7 +186,7 @@ const DomainList: React.FC<DomainListProps> = ({ domains, onSelect, onDelete, on
                         {domain.lastUpdated && (
                           domain.updateStatus === 'success' ? (
                             <span className="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[10px] font-medium bg-green-50 text-green-700 border border-green-100">
-                              已更新
+                              已读取
                             </span>
                           ) : domain.updateStatus === 'manual_check' ? (
                             <span className="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[10px] font-medium bg-yellow-50 text-yellow-700 border border-yellow-100">
